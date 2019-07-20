@@ -5,7 +5,8 @@ BINDIR   = bin
 CC = clang
 CFLAGS = -std=c99 -pedantic -Wall
 LDFLAGS=
-SOURCES=$(wildcard *.c)
+SOURCES=$(wildcard *.c) \
+	$(wildcard **/*.c)
 OBJECTS=$(SOURCES:%.c=$(BUILDDIR)/$(OBJDIR)/%.o)
 TARGET=calypso
 
@@ -19,10 +20,12 @@ $(BUILDDIR)/$(BINDIR)/$(TARGET): $(OBJECTS)
 	@echo "Linking complete!"
 
 $(BUILDDIR)/$(OBJDIR)/%.o: %.c %.h
+	@mkdir -p $(dir $@)
 	$(CC) $(CCFLAGS) -c $< -o $@
 	@echo "Compiled "$<" successfully!"
 
 $(BUILDDIR)/$(OBJDIR)/%.o: %.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CCFLAGS) -c $< -o $@
 	@echo "Compiled "$<" successfully!"
 
