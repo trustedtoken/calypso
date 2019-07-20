@@ -1,0 +1,30 @@
+BUILDDIR   = build
+OBJDIR   = obj
+BINDIR   = bin
+
+CC = clang
+CFLAGS = -std=c99 -pedantic -Wall
+LDFLAGS=
+SOURCES=$(wildcard *.c)
+OBJECTS=$(SOURCES:%.c=$(BUILDDIR)/$(OBJDIR)/%.o)
+TARGET=calypso
+
+all: dir $(BUILDDIR)/$(BINDIR)/$(TARGET)
+
+dir:
+	@mkdir -p build/{obj,bin}
+
+$(BUILDDIR)/$(BINDIR)/$(TARGET): $(OBJECTS)
+	$(CC) -o $@ $^ $(LDFLAGS)
+	@echo "Linking complete!"
+
+$(BUILDDIR)/$(OBJDIR)/%.o: %.c %.h
+	$(CC) $(CCFLAGS) -c $< -o $@
+	@echo "Compiled "$<" successfully!"
+
+$(BUILDDIR)/$(OBJDIR)/%.o: %.c
+	$(CC) $(CCFLAGS) -c $< -o $@
+	@echo "Compiled "$<" successfully!"
+
+clean:
+	rm -rf $(BUILDDIR)
